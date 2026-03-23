@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wealth Strategy | 財務最適化診断</title>
+  <meta name="description" content="3分でわかる財務最適化診断。収入・経費・控除・法人設計の状況から、手元に残るお金の見直し余地を無料で簡易チェック。" />
+  <meta name="theme-color" content="#123F8C" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: rgba(255,255,255,.88);
+      --card-strong: #ffffff;
+      --text: #12294a;
+      --muted: #5d708f;
+      --line: #dfe7f2;
+      --primary: #123f8c;
+      --primary-2: #1296e8;
+      --accent: #25b7f3;
+      --navy: #0f2f6b;
+      --success: #16a34a;
+      --danger: #db2b39;
+      --shadow: 0 18px 48px rgba(18,63,140,.12);
+      --radius: 22px;
+      --radius-sm: 16px;
+      --container: 1160px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(18,150,232,.10), transparent 34%),
+        radial-gradient(circle at top right, rgba(18,63,140,.08), transparent 28%),
+        linear-gradient(180deg, #f8fbff 0%, #f4f7fb 42%, #eef4fb 100%);
+      color: var(--text);
+      font-family: "Noto Sans JP", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, select { font: inherit; }
+    .hidden { display: none !important; }
+
+    .container {
+      width: min(calc(100% - 28px), var(--container));
+      margin: 0 auto;
+    }
+
+    .site-shell { padding: 18px 0 56px; }
+
+    .glass {
+      background: var(--card);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.75);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .hero-card {
+      border-radius: 28px;
+      padding: 22px 18px;
+    }
+
+    .brand-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(18,63,140,.08);
+      margin-bottom: 16px;
+    }
+
+    .brand-row img {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      object-fit: contain;
+      background: #fff;
+      padding: 4px;
+      box-shadow: 0 6px 18px rgba(18,63,140,.12);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 22px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .serif {
+      font-family: "Noto Serif JP", serif;
+      letter-spacing: .02em;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    .hero h1 {
+      font-size: clamp(30px, 7vw, 56px);
+      line-height: 1.18;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+
+    .hero-lead {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.85;
+      margin-bottom: 18px;
+    }
+
+    .chip-row, .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(18,150,232,.08);
+      color: var(--primary);
+      border: 1px solid rgba(18,150,232,.18);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 18px 0 16px;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 56px;
+      padding: 0 18px;
+      border-radius: 16px;
+      font-weight: 800;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease, background .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+      box-shadow: 0 18px 38px rgba(18,63,140,.24);
+    }
+
+    .btn-secondary {
+      color: var(--primary);
+      background: #fff;
+      border: 1px solid rgba(18,63,140,.12);
+    }
+
+    .hero-note {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .preview-card {
+      border-radius: 28px;
+      padding: 16px;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.88)),
+        linear-gradient(135deg, rgba(18,150,232,.08), rgba(18,63,140,.08));
+    }
+
+    .preview-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .mini-panel {
+      background: #fff;
+      border-radius: 18px;
+      padding: 14px;
+      border: 1px solid var(--line);
+    }
+
+    .mini-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .mini-value {
+      color: var(--navy);
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .mini-sub {
+      margin-top: 8px;
+      color: var(--primary-2);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .check-icon {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+      border-radius: 999px;
+      background: rgba(22,163,74,.12);
+      color: var(--success);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+
+    .section {
+      margin-top: 18px;
+      border-radius: 28px;
+      padding: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(22px, 5vw, 34px);
+      line-height: 1.3;
+      color: var(--navy);
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .value-grid,
+    .feature-grid,
+    .result-grid,
+    .summary-grid,
+    .tag-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .value-item,
+    .feature-item,
+    .result-item,
+    .summary-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .value-item strong,
+    .feature-item strong,
+    .result-item strong,
+    .summary-item strong {
+      display: block;
+      color: var(--navy);
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .value-item span,
+    .feature-item span,
+    .result-item span,
+    .summary-item span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .diagnosis-shell {
+      border-radius: 30px;
+      padding: 18px;
+      margin-top: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .progress-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .progress-step {
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .progress-title {
+      color: var(--navy);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .progress-count {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: rgba(18,63,140,.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--primary), var(--primary-2), var(--accent));
+      transition: width .28s ease;
+    }
+
+    .question-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .question-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: rgba(18,150,232,.10);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .question-title {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--navy);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .option-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      min-height: 54px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+      color: var(--text);
+      text-align: left;
+      padding: 14px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      line-height: 1.5;
+      transition: all .18s ease;
+    }
+
+    .option-btn:hover {
+      border-color: rgba(18,150,232,.35);
+      box-shadow: 0 10px 24px rgba(18,150,232,.10);
+    }
+
+    .option-btn.active {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+      box-shadow: 0 16px 30px rgba(18,63,140,.20);
+    }
+
+    .action-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .action-row .btn { flex: 1; }
+
+    .loading-box,
+    .result-box {
+      border-radius: 28px;
+      padding: 22px 18px;
+      margin-top: 18px;
+    }
+
+    .loading-inner {
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+      text-align: center;
+      padding: 14px 0 2px;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border-radius: 999px;
+      border: 4px solid rgba(18,63,140,.12);
+      border-top-color: var(--primary-2);
+      animation: spin .9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .loading-text {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      max-width: 34em;
+    }
+
+    .result-hero {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(18,150,232,.10);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .06em;
+    }
+
+    .result-amount {
+      font-size: clamp(36px, 10vw, 68px);
+      line-height: 1.06;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -.02em;
+    }
+
+    .result-amount span {
+      font-size: .52em;
+      margin-left: 6px;
+    }
+
+    .result-copy {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.85;
+    }
+
+    .impact-strip {
+      display: grid;
+      gap: 10px;
+      margin: 10px 0 18px;
+    }
+
+    .impact-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(18,63,140,.08), rgba(18,150,232,.10));
+      border: 1px solid rgba(18,150,232,.16);
+    }
+
+    .impact-pill strong {
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .impact-pill span {
+      color: var(--primary-2);
+      font-size: 18px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .cta-card {
+      margin-top: 16px;
+      border-radius: 24px;
+      padding: 18px;
+      background: linear-gradient(135deg, #123f8c 0%, #1296e8 100%);
+      color: #fff;
+      box-shadow: 0 22px 44px rgba(18,63,140,.28);
+    }
+
+    .cta-card h3 {
+      font-size: 24px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .cta-card p {
+      opacity: .92;
+      line-height: 1.8;
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    .cta-card .btn {
+      width: 100%;
+      background: #fff;
+      color: var(--primary);
+      box-shadow: 0 12px 28px rgba(255,255,255,.18);
+    }
+
+    .foot-note {
+      margin-top: 12px;
+      color: rgba(255,255,255,.88);
+      font-size: 12px;
+      line-height: 1.75;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    @media (min-width: 768px) {
+      .site-shell { padding-top: 26px; }
+      .hero {
+        grid-template-columns: 1.05fr .95fr;
+        gap: 22px;
+      }
+      .hero-card,
+      .preview-card,
+      .section,
+      .diagnosis-shell,
+      .loading-box,
+      .result-box { padding: 26px; }
+      .value-grid,
+      .feature-grid,
+      .result-grid,
+      .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .impact-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tag-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .preview-grid { grid-template-columns: 1.15fr .85fr; }
+      .option-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .question-title { font-size: 17px; }
+      .hero-actions { flex-direction: row; align-items: center; }
+      .hero-actions .btn { min-width: 240px; }
+    }
+
+    @media (min-width: 1024px) {
+      .site-shell { padding-bottom: 72px; }
+      .section { margin-top: 22px; }
+      .hero-card,
+      .preview-card,
+      .section,
+      .diagnosis-shell,
+      .loading-box,
+      .result-box { border-radius: 30px; }
+      .question-card { padding: 18px; }
+      .action-row { justify-content: flex-end; }
+      .action-row .btn { flex: 0 0 auto; min-width: 180px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <div class="container">
+      <section class="hero">
+        <div class="hero-card glass" id="heroCard">
+          <div class="brand-row">
+            <img src="https://www.genspark.ai/api/files/s/BnNpqmVQ" alt="Wealth Strategy ロゴ" />
+            <strong>Wealth Strategy</strong>
+          </div>
+          <div class="eyebrow">FREE FINANCIAL DIAGNOSIS</div>
+          <h1 class="serif">あなたはいくら<br>見直し余地がある？</h1>
+          <p class="hero-lead">
+            収入・経費・控除・法人設計の状況から、<br>
+            手元に残るお金の改善余地を無料で簡易チェック。<br>
+            スマホで答えて、その場で概算結果まで確認できます。
+          </p>
+          <div class="chip-row">
+            <span class="chip">完全無料</span>
+            <span class="chip">最短3分</span>
+            <span class="chip">年収300万円〜1億円以上対応</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="startBtn">無料で診断を始める</button>
+            <a class="btn btn-secondary" href="#diagnosis">内容を先に見る</a>
+          </div>
+          <p class="hero-note">※ この診断は簡易シミュレーションです。実際の最適化余地は収入構造・契約状況・ご家族構成などで変動します。</p>
+        </div>
+
+        <div class="preview-card glass">
+          <div class="preview-grid">
+            <div class="mini-panel">
+              <div class="mini-label">診断イメージ</div>
+              <div class="mini-value">約128<span style="font-size:16px; font-weight:700; margin-left:4px;">万円/年</span></div>
+              <div class="mini-sub">手元改善インパクト 15〜24% 目安</div>
+              <div class="check-list">
+                <div class="check-item"><span class="check-icon">✓</span><span>法人化・マイクロ法人設計の見直し余地</span></div>
+                <div class="check-item"><span class="check-icon">✓</span><span>経費・家賃・保険の整備ポイント</span></div>
+                <div class="check-item"><span class="check-icon">✓</span><span>iDeCo・共済・ふるさと納税などの活用差</span></div>
+              </div>
+            </div>
+            <div class="mini-panel">
+              <div class="mini-label">こんな方におすすめ</div>
+              <div class="check-list">
+                <div class="check-item"><span class="check-icon">✓</span><span>税金や社会保険料の最適化を考えたい</span></div>
+                <div class="check-item"><span class="check-icon">✓</span><span>売上は伸びたが、思ったほど手元に残らない</span></div>
+                <div class="check-item"><span class="check-icon">✓</span><span>法人化のタイミングや役員報酬設計が気になる</span></div>
+                <div class="check-item"><span class="check-icon">✓</span><span>何から見直せばいいか整理したい</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section glass">
+        <div class="section-head">
+          <div class="eyebrow">VALUE</div>
+          <h2 class="serif">3分で、見直し余地の全体像を可視化</h2>
+          <p>LPの安心感と、実際に使える診断UIをひとつにまとめた、スマホファーストの完成版です。ざっくりした金額だけでなく、どこに余地があるかまでわかります。</p>
+        </div>
+        <div class="value-grid">
+          <div class="value-item">
+            <strong>年間の見直し余地</strong>
+            <span>概算でいくら改善余地がありそうかを、年収帯と回答内容から自動表示します。</span>
+          </div>
+          <div class="value-item">
+            <strong>手元改善率の目安</strong>
+            <span>しっかり見直した場合に、手元資金がどのくらい増えうるかを率でも表示します。</span>
+          </div>
+          <div class="value-item">
+            <strong>主な論点の整理</strong>
+            <span>控除、経費、法人設計、役員報酬など、優先して確認すべきポイントを抽出します。</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section glass">
+        <div class="section-head">
+          <div class="eyebrow">FLOW</div>
+          <h2 class="serif">診断の流れ</h2>
+          <p>全5ステップ・15問。すべて選択式で、途中保存にも対応しています。</p>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-item"><strong>STEP 1 基本情報</strong><span>年収帯・職業・確定申告と青色申告の状況を確認します。</span></div>
+          <div class="feature-item"><strong>STEP 2 収入構造</strong><span>収入源のタイプと、マイクロ法人の活用状況を確認します。</span></div>
+          <div class="feature-item"><strong>STEP 3 支出・経費</strong><span>月の経費、家賃、保険の水準を確認します。</span></div>
+          <div class="feature-item"><strong>STEP 4 控除・制度活用</strong><span>iDeCo、小規模企業共済、ふるさと納税などの活用状況を確認します。</span></div>
+          <div class="feature-item"><strong>STEP 5 その他の活用状況</strong><span>医療費控除、生命保険控除、相談体制の有無を確認します。</span></div>
+        </div>
+      </section>
+
+      <section class="diagnosis-shell glass" id="diagnosis">
+        <div class="progress-top">
+          <div class="progress-copy">
+            <span class="progress-step" id="progressStep">STEP 1</span>
+            <strong class="progress-title" id="progressTitle">基本情報</strong>
+          </div>
+          <div class="progress-count" id="progressCount">1 / 6</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div id="questionArea"></div>
+        <div class="action-row">
+          <button class="btn btn-secondary" id="backBtn">戻る</button>
+          <button class="btn btn-primary" id="nextBtn">次へ進む</button>
+        </div>
+      </section>
+
+      <section class="loading-box glass hidden" id="loadingBox">
+        <div class="loading-inner">
+          <div class="spinner"></div>
+          <div class="loading-title">診断結果を作成しています…</div>
+          <div class="loading-text">収入構造・経費・控除・法人設計の回答内容をもとに、見直し余地の概算を計算しています。</div>
+        </div>
+      </section>
+
+      <section class="result-box glass hidden" id="resultBox">
+        <div class="result-hero">
+          <span class="result-badge">DIAGNOSIS RESULT</span>
+          <div class="result-amount" id="resultAmount">約0<span>万円 / 年</span></div>
+          <p class="result-copy" id="resultCopy">診断結果の概要がここに表示されます。</p>
+        </div>
+
+        <div class="impact-strip">
+          <div class="impact-pill">
+            <strong>手元改善率の目安</strong>
+            <span id="resultRate">15〜20%</span>
+          </div>
+          <div class="impact-pill">
+            <strong>3年換算インパクト</strong>
+            <span id="resultThreeYear">約0万円</span>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-bottom:10px;">
+          <h2 class="serif" style="font-size:24px;">主な見直しポイント</h2>
+          <p>回答内容から、優先的に確認するとよい論点を抽出しました。</p>
+        </div>
+
+        <div class="result-grid" id="resultGrid"></div>
+
+        <div class="section-head" style="margin:18px 0 10px;">
+          <h2 class="serif" style="font-size:24px;">注目タグ</h2>
+          <p>詳細相談時にそのまま共有できる、今回の診断テーマです。</p>
+        </div>
+        <div class="tag-grid" id="tagGrid"></div>
+
+        <div class="cta-card">
+          <h3 class="serif">LINEであなた専用の詳細診断を受ける</h3>
+          <p>簡易診断だけでは拾いきれない部分まで、収入構造・経費・控除・法人設計を踏まえて具体的に確認できます。</p>
+          <a class="btn" id="lineBtn" href="https://lin.ee/zI6LUua" target="_blank" rel="noopener noreferrer">LINEで詳細診断を受ける</a>
+          <div class="foot-note">※ 無理な営業はなし / まずは現状整理だけでもOK / この結果を見せながら相談できます</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const LINE_URL = 'https://lin.ee/zI6LUua';
+    const STORAGE_KEY = 'wealth-strategy-diagnosis-v3';
+
+    const representativeIncome = {
+      under300: 2500000,
+      '300to500': 4000000,
+      '500to800': 6500000,
+      '800to1500': 11500000,
+      '1500to3000': 22500000,
+      '3000to5000': 40000000,
+      '5000to10000': 75000000,
+      over10000: 100000000,
+    };
+
+    const baseOpportunity = {
+      under300: 200000,
+      '300to500': 200000,
+      '500to800': 350000,
+      '800to1500': 650000,
+      '1500to3000': 1000000,
+      '3000to5000': 2750000,
+      '5000to10000': 4000000,
+      over10000: 5500000,
+    };
+
+    const filingAdjustment = {
+      noReturn: 600000,
+      yes: 0,
+      unknown: 200000,
+    };
+
+    const blueFilingAdjustment = {
+      yes: 50000,
+      no: 300000,
+      unknown: 200000,
+      notApplicable: 0,
+    };
+
+    const deductionAdjustment = {
+      ideco: { none: 200000, under1: 100000, '1to3': 50000, over3: 0 },
+      mutualAid: { no: 250000, yes: 0 },
+      hometown: { no: 60000, yes: 0 },
+      medical: { yes: 50000, no: 0 },
+      lifeInsurance: { no: 50000, yes: 0 },
+      advisor: { no: 100000, yes: 0 },
+    };
+
+    const incomeStructureAdjustment = {
+      incomeSource: { single: 0, multiple: 100000 },
+    };
+
+    const representativeMonthlyExpense = {
+      '0to10': 50000,
+      '10to30': 200000,
+      '30to50': 400000,
+      '50to100': 750000,
+      '100to200': 1500000,
+      '200to300': 2500000,
+      '300to400': 3500000,
+      '400to500': 4500000,
+      over500: 5500000,
+    };
+
+    const representativeMonthlyRent = {
+      under5: 40000,
+      '5to10': 80000,
+      '10to20': 150000,
+      '20to30': 250000,
+      '30to50': 400000,
+      '50to70': 600000,
+      '70to100': 850000,
+      over100: 1100000,
+    };
+
+    const steps = [
+      { id: 1, title: '基本情報', keys: ['income', 'job', 'filing', 'blueFiling'] },
+      { id: 2, title: '収入構造', keys: ['incomeSource', 'microcorp'] },
+      { id: 3, title: '支出・経費', keys: ['monthlyExpense', 'rent', 'insurance'] },
+      { id: 4, title: '控除・制度活用', keys: ['ideco', 'mutualAid', 'hometown'] },
+      { id: 5, title: 'その他の活用状況', keys: ['medical', 'lifeInsurance', 'advisor'] },
+    ];
+
+    const questions = {
+      income: {
+        number: 'Q1',
+        title: '現在の年収レンジを教えてください',
+        options: [
+          ['under300', '300万円未満'],
+          ['300to500', '300〜500万円'],
+          ['500to800', '500〜800万円'],
+          ['800to1500', '800〜1500万円'],
+          ['1500to3000', '1500〜3000万円'],
+          ['3000to5000', '3000〜5000万円'],
+          ['5000to10000', '5000万円〜1億円'],
+          ['over10000', '1億円以上'],
+        ],
+      },
+      job: {
+        number: 'Q2',
+        title: '現在の職業に近いものを選んでください',
+        options: [
+          ['employee', '会社員'],
+          ['executive', '役員'],
+          ['freelance', '個人事業主・フリーランス'],
+          ['owner', '法人オーナー'],
+          ['doctor', '医師・士業など高専門職'],
+          ['other', 'その他'],
+        ],
+      },
+      filing: {
+        number: 'Q3',
+        title: '確定申告をしていますか？',
+        options: [
+          ['noReturn', 'していない'],
+          ['yes', 'している'],
+          ['unknown', 'よくわからない'],
+        ],
+      },
+      blueFiling: {
+        number: 'Q4',
+        title: '青色申告をやっていますか？',
+        options: [
+          ['yes', 'やっている'],
+          ['no', 'やっていない'],
+          ['notApplicable', '該当しない'],
+          ['unknown', 'よくわからない'],
+        ],
+      },
+      incomeSource: {
+        number: 'Q5',
+        title: '収入源はどのタイプですか？',
+        options: [
+          ['single', '給与など単一の収入が中心'],
+          ['multiple', '給与・事業・副収入など複数ある'],
+        ],
+      },
+      microcorp: {
+        number: 'Q6',
+        title: 'マイクロ法人の活用状況を教えてください',
+        options: [
+          ['none', '活用していない'],
+          ['considering', '検討中'],
+          ['using', '活用している'],
+          ['dontKnow', 'よくわからない'],
+        ],
+      },
+      monthlyExpense: {
+        number: 'Q7',
+        title: '月あたりの経費はどれくらいですか？',
+        options: [
+          ['0to10', '0〜10万円'],
+          ['10to30', '10〜30万円'],
+          ['30to50', '30〜50万円'],
+          ['50to100', '50〜100万円'],
+          ['100to200', '100〜200万円'],
+          ['200to300', '200〜300万円'],
+          ['300to400', '300〜400万円'],
+          ['400to500', '400〜500万円'],
+          ['over500', '500万円以上'],
+        ],
+      },
+      rent: {
+        number: 'Q8',
+        title: '現在の家賃を教えてください',
+        options: [
+          ['under5', '5万円未満'],
+          ['5to10', '5〜10万円'],
+          ['10to20', '10〜20万円'],
+          ['20to30', '20〜30万円'],
+          ['30to50', '30〜50万円'],
+          ['50to70', '50〜70万円'],
+          ['70to100', '70〜100万円'],
+          ['over100', '100万円以上'],
+        ],
+      },
+      insurance: {
+        number: 'Q9',
+        title: '保険料は毎月どれくらいですか？',
+        options: [
+          ['none', '未加入'],
+          ['under1', '〜1万円'],
+          ['1to3', '1〜3万円'],
+          ['over3', '3万円以上'],
+        ],
+      },
+      ideco: {
+        number: 'Q10',
+        title: 'iDeCoの利用状況を教えてください',
+        options: [
+          ['none', '利用していない'],
+          ['under1', '少額で利用している'],
+          ['1to3', 'ある程度利用している'],
+          ['over3', 'かなり活用している'],
+        ],
+      },
+      mutualAid: {
+        number: 'Q11',
+        title: '小規模企業共済は加入していますか？',
+        options: [
+          ['no', '加入していない'],
+          ['yes', '加入している'],
+        ],
+      },
+      hometown: {
+        number: 'Q12',
+        title: 'ふるさと納税は活用していますか？',
+        options: [
+          ['no', '活用していない'],
+          ['yes', '活用している'],
+        ],
+      },
+      medical: {
+        number: 'Q13',
+        title: '医療費控除の対象になりそうですか？',
+        options: [
+          ['no', '該当しない・使っていない'],
+          ['yes', '対象の可能性がある'],
+        ],
+      },
+      lifeInsurance: {
+        number: 'Q14',
+        title: '生命保険控除は使っていますか？',
+        options: [
+          ['no', '使っていない'],
+          ['yes', '使っている'],
+        ],
+      },
+      advisor: {
+        number: 'Q15',
+        title: '財務や税務を相談できる人はいますか？',
+        options: [
+          ['no', 'いない'],
+          ['yes', 'いる'],
+        ],
+      },
+    };
+
+    const state = {
+      stepIndex: 0,
+      answers: {},
+    };
+
+    const els = {
+      startBtn: document.getElementById('startBtn'),
+      questionArea: document.getElementById('questionArea'),
+      progressStep: document.getElementById('progressStep'),
+      progressTitle: document.getElementById('progressTitle'),
+      progressCount: document.getElementById('progressCount'),
+      progressFill: document.getElementById('progressFill'),
+      backBtn: document.getElementById('backBtn'),
+      nextBtn: document.getElementById('nextBtn'),
+      loadingBox: document.getElementById('loadingBox'),
+      resultBox: document.getElementById('resultBox'),
+      resultAmount: document.getElementById('resultAmount'),
+      resultCopy: document.getElementById('resultCopy'),
+      resultRate: document.getElementById('resultRate'),
+      resultThreeYear: document.getElementById('resultThreeYear'),
+      resultGrid: document.getElementById('resultGrid'),
+      tagGrid: document.getElementById('tagGrid'),
+      lineBtn: document.getElementById('lineBtn'),
+    };
+
+    function yenToMan(value) {
+      return Math.round(value / 10000);
+    }
+
+    function formatMan(value) {
+      return `約${yenToMan(value).toLocaleString('ja-JP')}万円`;
+    }
+
+    function clamp(n, min, max) {
+      return Math.min(max, Math.max(min, n));
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') {
+          state.stepIndex = Number.isInteger(parsed.stepIndex) ? parsed.stepIndex : 0;
+          state.answers = parsed.answers && typeof parsed.answers === 'object' ? parsed.answers : {};
+        }
+      } catch {}
+    }
+
+    function scrollToDiagnosis() {
+      document.getElementById('diagnosis').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderStep() {
+      const step = steps[state.stepIndex];
+      const total = steps.length;
+      const progress = ((state.stepIndex + 1) / total) * 100;
+
+      els.progressStep.textContent = `STEP ${step.id}`;
+      els.progressTitle.textContent = step.title;
+      els.progressCount.textContent = `${step.id} / ${total}`;
+      els.progressFill.style.width = `${progress}%`;
+      els.backBtn.style.visibility = state.stepIndex === 0 ? 'hidden' : 'visible';
+      els.nextBtn.textContent = state.stepIndex === total - 1 ? '結果を見る' : '次へ進む';
+
+      els.questionArea.innerHTML = step.keys.map((key) => {
+        const q = questions[key];
+        const current = state.answers[key];
+        const options = q.options.map(([value, label]) => `
+          <button class="option-btn ${current === value ? 'active' : ''}" data-key="${key}" data-value="${value}" type="button">${label}</button>
+        `).join('');
+
+        return `
+          <article class="question-card">
+            <div class="question-number">${q.number}</div>
+            <h3 class="question-title">${q.title}</h3>
+            <div class="option-grid">${options}</div>
+          </article>
+        `;
+      }).join('');
+
+      bindOptionEvents();
+      updateNextButtonState();
+    }
+
+    function bindOptionEvents() {
+      document.querySelectorAll('.option-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const { key, value } = btn.dataset;
+          state.answers[key] = value;
+          saveState();
+          renderStep();
+        });
+      });
+    }
+
+    function updateNextButtonState() {
+      const keys = steps[state.stepIndex].keys;
+      const complete = keys.every((key) => !!state.answers[key]);
+      els.nextBtn.disabled = !complete;
+    }
+
+    function getExpenseOpportunity(incomeValue, expenseKey) {
+      const target = incomeValue * 0.2;
+      const actual = (representativeMonthlyExpense[expenseKey] || 0) * 12;
+      const gap = Math.max(0, target - actual);
+      return Math.round(gap * 0.5);
+    }
+
+    function getMicrocorpOpportunity(incomeValue, microKey) {
+      if (incomeValue < 8000000) return 0;
+      if (microKey === 'none' || microKey === 'dontKnow') return Math.round(incomeValue * 0.1);
+      if (microKey === 'considering') return Math.round(incomeValue * 0.05);
+      return 0;
+    }
+
+    function getRentOpportunity(incomeValue, rentKey) {
+      const rent = representativeMonthlyRent[rentKey] || 0;
+      if (incomeValue < 8000000 || rent < 200000) return 0;
+      if (rent >= 1000000) return 400000;
+      if (rent >= 700000) return 320000;
+      if (rent >= 500000) return 250000;
+      if (rent >= 300000) return 180000;
+      return 120000;
+    }
+
+    function getInsuranceAdjustment(insuranceKey) {
+      const map = { none: 0, under1: 30000, '1to3': 60000, over3: 90000 };
+      return map[insuranceKey] || 0;
+    }
+
+    function buildResultItems(answers, totals) {
+      const items = [];
+      const tags = [];
+
+      if (totals.filing >= 250000) {
+        items.push({
+          title: '申告方式の見直し',
+          text: '確定申告・青色申告の整理に改善余地がある可能性があります。申告方法だけでも手元への影響が出やすい領域です。',
+        });
+        tags.push('青色申告', '申告整理');
+      }
+
+      if (totals.microcorp > 0) {
+        items.push({
+          title: 'マイクロ法人活用',
+          text: 'マイクロ法人の未活用・未整理による見直し余地が見られます。社会保険や所得分散の観点も要確認です。',
+        });
+        tags.push('マイクロ法人', '所得分散');
+      }
+
+      if (totals.expense > 0) {
+        items.push({
+          title: '経費の最適化',
+          text: '年収に対して経費水準が低めに見えるため、経費計上や支出設計を見直す余地があります。',
+        });
+        tags.push('経費最適化');
+      }
+
+      if (totals.deductions > 150000) {
+        items.push({
+          title: '控除・制度活用',
+          text: 'iDeCo、小規模企業共済、ふるさと納税、保険控除などの使い方で差が出ている可能性があります。',
+        });
+        tags.push('控除活用', 'iDeCo', '小規模企業共済');
+      }
+
+      if (totals.rent > 0) {
+        items.push({
+          title: '家賃・固定費設計',
+          text: '家賃や固定費の扱い方に見直し余地がある可能性があります。支出構造全体での整理が有効です。',
+        });
+        tags.push('固定費最適化');
+      }
+
+      if (answers.advisor === 'no') {
+        items.push({
+          title: '相談体制の整備',
+          text: '相談相手がいない場合、制度の見逃しや設計の遅れが起きやすくなります。専門家との定期点検が有効です。',
+        });
+        tags.push('専門家相談');
+      }
+
+      while (items.length < 3) {
+        items.push({
+          title: '全体設計の見直し',
+          text: '単独項目だけでなく、収入・経費・控除・申告方式を全体最適で見ることで改善幅が広がる可能性があります。',
+        });
+      }
+
+      const uniqueTags = [...new Set(tags)].slice(0, 8);
+      if (!uniqueTags.length) uniqueTags.push('全体最適', '財務整理', '手元資金改善');
+
+      return { items: items.slice(0, 6), tags: uniqueTags };
+    }
+
+    function getFilingOpportunity(answers) {
+      if (answers.filing === 'noReturn') return filingAdjustment.noReturn;
+      if (answers.filing === 'unknown') return filingAdjustment.unknown;
+      if (answers.filing === 'yes') return blueFilingAdjustment[answers.blueFiling] || 0;
+      return 0;
+    }
+
+    function calculateDiagnosis() {
+      const a = state.answers;
+      const incomeValue = representativeIncome[a.income] || 0;
+      const base = baseOpportunity[a.income] || 0;
+      const filing = getFilingOpportunity(a);
+      const deductions =
+        (deductionAdjustment.ideco[a.ideco] || 0) +
+        (deductionAdjustment.mutualAid[a.mutualAid] || 0) +
+        (deductionAdjustment.hometown[a.hometown] || 0) +
+        (deductionAdjustment.medical[a.medical] || 0) +
+        (deductionAdjustment.lifeInsurance[a.lifeInsurance] || 0) +
+        (deductionAdjustment.advisor[a.advisor] || 0);
+
+      const structure =
+        (incomeStructureAdjustment.incomeSource[a.incomeSource] || 0);
+
+      const expense = getExpenseOpportunity(incomeValue, a.monthlyExpense);
+      const microcorp = getMicrocorpOpportunity(incomeValue, a.microcorp);
+      const rent = getRentOpportunity(incomeValue, a.rent);
+      const insurance = getInsuranceAdjustment(a.insurance);
+
+      const total = base + filing + deductions + structure + expense + microcorp + rent + insurance;
+      const ratioRaw = incomeValue ? total / incomeValue : 0;
+      const lowRate = clamp(Math.round(ratioRaw * 100 * 0.72), 10, 22);
+      const highRate = clamp(Math.max(lowRate + 5, Math.round(ratioRaw * 100)), 15, 30);
+
+      const comment = total >= 3000000
+        ? '大きめの見直し余地がある可能性があります。青色申告・マイクロ法人・控除まで含めて、全体最適で確認する価値が高い状態です。'
+        : total >= 1200000
+          ? '複数の領域に改善余地が見られます。控除や経費だけでなく、申告方式やマイクロ法人の整理まで含めるとインパクトが出やすい状況です。'
+          : '基礎的な見直しで手元改善が見込める可能性があります。まずは控除・経費・制度活用から整えるのが有効です。';
+
+      const breakdown = { base, filing, deductions, structure, expense, microcorp, rent, insurance };
+      const resultMeta = buildResultItems(a, breakdown);
+
+      return {
+        incomeValue,
+        total,
+        lowRate,
+        highRate,
+        threeYear: total * 3,
+        comment,
+        breakdown,
+        items: resultMeta.items,
+        tags: resultMeta.tags,
+      };
+    }
+
+    function renderResult(result) {
+      els.resultAmount.innerHTML = `${formatMan(result.total)}<span>/ 年</span>`;
+      els.resultCopy.textContent = result.comment;
+      els.resultRate.textContent = `${result.lowRate}〜${result.highRate}%`;
+      els.resultThreeYear.textContent = formatMan(result.threeYear);
+      els.lineBtn.href = LINE_URL;
+
+      els.resultGrid.innerHTML = result.items.map(item => `
+        <article class="result-item">
+          <strong>${item.title}</strong>
+          <span>${item.text}</span>
+        </article>
+      `).join('');
+
+      els.tagGrid.innerHTML = result.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+    }
+
+    function goNext() {
+      if (state.stepIndex < steps.length - 1) {
+        state.stepIndex += 1;
+        saveState();
+        renderStep();
+        scrollToDiagnosis();
+        return;
+      }
+
+      saveState();
+      document.getElementById('diagnosis').classList.add('hidden');
+      els.resultBox.classList.add('hidden');
+      els.loadingBox.classList.remove('hidden');
+      scrollToDiagnosis();
+
+      setTimeout(() => {
+        const result = calculateDiagnosis();
+        renderResult(result);
+        els.loadingBox.classList.add('hidden');
+        els.resultBox.classList.remove('hidden');
+        els.resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 1200);
+    }
+
+    function goBack() {
+      if (state.stepIndex === 0) return;
+      state.stepIndex -= 1;
+      saveState();
+      renderStep();
+      scrollToDiagnosis();
+    }
+
+    function init() {
+      loadState();
+      els.lineBtn.href = LINE_URL;
+      els.startBtn.addEventListener('click', () => {
+        scrollToDiagnosis();
+      });
+      els.backBtn.addEventListener('click', goBack);
+      els.nextBtn.addEventListener('click', goNext);
+      renderStep();
+    }
+
+    init();
+  </script>
+</body>
+</html>
